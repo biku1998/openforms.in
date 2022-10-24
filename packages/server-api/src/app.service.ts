@@ -14,6 +14,7 @@ export class AppService {
       created_at: new Date(),
       deleted_at: new Date(),
       is_active: false,
+      new: 'added',
     };
     return user;
   }
