@@ -1,0 +1,19 @@
+{
+  "name": "shared-ts",
+  "version": "0.0.0",
+  "description": "shared typescript types",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/biku1998/openforms.in.git"
+  },
+  "author": "https://github.com/biku1998",
+  "bugs": {
+    "url": "https://github.com/biku1998/openforms.in/issues"
+  },
+  "homepage": "https://github.com/biku1998/openforms.in#readme"
+}
