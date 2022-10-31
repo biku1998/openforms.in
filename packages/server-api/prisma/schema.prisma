@@ -1,0 +1,257 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId       Int       @id @default(autoincrement())
+  email        String    @unique
+  firstName    String
+  lastName     String?
+  passwordHash String
+  avatarUrl    String?
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+  deletedAt    DateTime?
+  forms        Form[]
+
+  @@map("Users")
+}
+
+model Form {
+  formId              Int                      @id @default(autoincrement())
+  title               String
+  iconUrl             String?
+  description         String?
+  creator             User                     @relation(fields: [userId], references: [userId])
+  userId              Int
+  quizSetting         QuizSetting?
+  responseSetting     FormResponseSetting?
+  presentationSetting FormPresentationSetting?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
+  choiceQuestions     ChoiceQuestion[]
+  fileUploadQuestions FileUploadQuestion[]
+  dateQuestions       DateQuestion[]
+  npsQuestions        NpsQuestion[]
+  ratingQuestions     RatingQuestion[]
+  infoQuestions       InfoQuestion[]
+  texts               Text[]
+  textQuestions       TextQuestion[]
+
+  @@map("Forms")
+}
+
+model QuizSetting {
+  settingId Int  @id @default(autoincrement())
+  form      Form @relation(fields: [formId], references: [formId])
+  formId    Int  @unique
+
+  defaultPointValue       Int     @default(0)
+  releaseScoreImmediately Boolean @default(true)
+  viewMissedQuestions     Boolean @default(true)
+  viewCorrectAnswers      Boolean @default(true)
+  viewPointValues         Boolean @default(true)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
+  @@map("QuizSettings")
+}
+
+model FormResponseSetting {
+  settingId Int  @id @default(autoincrement())
+  form      Form @relation(fields: [formId], references: [formId])
+  formId    Int  @unique
+
+  collectEmail         Boolean @default(true)
+  allQuestionsRequired Boolean @default(true)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
+  @@map("FormResponseSettings")
+}
+
+model FormPresentationSetting {
+  settingId Int  @id @default(autoincrement())
+  form      Form @relation(fields: [formId], references: [formId])
+  formId    Int  @unique
+
+  showProgressBar Boolean @default(false)
+  shuffleQuestion Boolean @default(false)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
+  @@map("FormPresentationSettings")
+}
+
+enum ChoiceType {
+  RADIO
+  CHECKBOX
+  DROP_DOWN
+}
+
+enum FileType {
+  ANY
+  DOCUMENT
+  PRESENTATION
+  SPREADSHEET
+  PDF
+  IMAGE
+  VIDEO
+  AUDIO
+}
+
+enum RatingType {
+  STAR
+  HEART
+}
+
+enum InfoType {
+  WEBSITE
+  PHONE
+  EMAIL
+}
+
+enum QuestionType {
+  CHOICE
+  FILE_UPLOAD
+  DATE
+  NPS
+  RATING
+  INFO
+  TEXT
+}
+
+model ChoiceQuestion {
+  questionId Int @id @default(autoincrement())
+
+  content        String
+  type           ChoiceType
+  shuffleOptions Boolean    @default(false)
+  position       Int
+  form           Form       @relation(fields: [formId], references: [formId])
+  formId         Int
+
+  @@map("ChoiceQuestions")
+}
+
+model FileUploadQuestion {
+  questionId Int @id @default(autoincrement())
+
+  content     String
+  maxFileSize Int
+  maxFiles    Int
+  types       FileType[]
+
+  position Int
+  form     Form @relation(fields: [formId], references: [formId])
+  formId   Int
+
+  @@map("FileUploadQuestions")
+}
+
+model DateQuestion {
+  questionId Int @id @default(autoincrement())
+
+  content     String
+  includeYear Boolean @default(true)
+  includeTime Boolean @default(true)
+
+  position Int
+  form     Form @relation(fields: [formId], references: [formId])
+  formId   Int
+
+  @@map("DateQuestions")
+}
+
+model NpsQuestion {
+  questionId Int @id @default(autoincrement())
+
+  content   String
+  high      Int
+  low       Int
+  lowLabel  String
+  highLabel String
+  position  Int
+  form      Form   @relation(fields: [formId], references: [formId])
+  formId    Int
+
+  @@map("NpsQuestions")
+}
+
+model RatingQuestion {
+  questionId Int @id @default(autoincrement())
+
+  content   String
+  type      RatingType
+  high      Int
+  low       Int
+  lowLabel  String
+  highLabel String
+  position  Int
+  form      Form       @relation(fields: [formId], references: [formId])
+  formId    Int
+
+  @@map("RatingQuestions")
+}
+
+model InfoQuestion {
+  questionId Int @id @default(autoincrement())
+
+  content  String
+  type     InfoType
+  position Int
+  form     Form     @relation(fields: [formId], references: [formId])
+  formId   Int
+
+  @@map("InfoQuestions")
+}
+
+model TextQuestion {
+  questionId Int @id @default(autoincrement())
+
+  content   String
+  paragraph Boolean @default(false)
+  position  Int
+  form      Form    @relation(fields: [formId], references: [formId])
+  formId    Int
+
+  @@map("TextQuestions")
+}
+
+model Text {
+  textId Int @id @default(autoincrement())
+
+  content  String
+  position Int
+  form     Form   @relation(fields: [formId], references: [formId])
+  formId   Int
+
+  @@map("Texts")
+}
+
+model Option {
+  optionId     Int          @id @default(autoincrement())
+  questionId   Int
+  content      String
+  imageUrl     String?
+  position     Int
+  questionType QuestionType
+
+  @@unique([optionId, questionId])
+  @@map("Options")
+}
