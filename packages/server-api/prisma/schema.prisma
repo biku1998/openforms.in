@@ -146,6 +146,9 @@ model ChoiceQuestion {
   position       Int
   form           Form       @relation(fields: [formId], references: [formId])
   formId         Int
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime?  @updatedAt
+  deletedAt      DateTime?
 
   @@map("ChoiceQuestions")
 }
@@ -157,10 +160,13 @@ model FileUploadQuestion {
   maxFileSize Int
   maxFiles    Int
   types       FileType[]
+  position    Int
+  form        Form       @relation(fields: [formId], references: [formId])
+  formId      Int
 
-  position Int
-  form     Form @relation(fields: [formId], references: [formId])
-  formId   Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   @@map("FileUploadQuestions")
 }
@@ -171,10 +177,13 @@ model DateQuestion {
   content     String
   includeYear Boolean @default(true)
   includeTime Boolean @default(true)
+  position    Int
+  form        Form    @relation(fields: [formId], references: [formId])
+  formId      Int
 
-  position Int
-  form     Form @relation(fields: [formId], references: [formId])
-  formId   Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   @@map("DateQuestions")
 }
@@ -190,6 +199,10 @@ model NpsQuestion {
   position  Int
   form      Form   @relation(fields: [formId], references: [formId])
   formId    Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   @@map("NpsQuestions")
 }
@@ -207,6 +220,10 @@ model RatingQuestion {
   form      Form       @relation(fields: [formId], references: [formId])
   formId    Int
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
   @@map("RatingQuestions")
 }
 
@@ -218,6 +235,10 @@ model InfoQuestion {
   position Int
   form     Form     @relation(fields: [formId], references: [formId])
   formId   Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   @@map("InfoQuestions")
 }
@@ -231,6 +252,10 @@ model TextQuestion {
   form      Form    @relation(fields: [formId], references: [formId])
   formId    Int
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
   @@map("TextQuestions")
 }
 
@@ -241,6 +266,10 @@ model Text {
   position Int
   form     Form   @relation(fields: [formId], references: [formId])
   formId   Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   @@map("Texts")
 }
@@ -253,6 +282,10 @@ model Option {
   position               Int
   questionType           QuestionType
   gradingCorrectOptionId GradingCorrectOptionId?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   @@unique([optionId, questionId])
   @@map("Options")
@@ -268,6 +301,10 @@ model Grading {
   generalFeedback   String
   correctOptionIds  GradingCorrectOptionId[]
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
   @@unique([gradingId, questionId])
   @@map("Gradings")
 }
@@ -277,6 +314,10 @@ model GradingCorrectOptionId {
   gradingId Int
   option    Option  @relation(fields: [optionId], references: [optionId])
   optionId  Int     @unique
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   @@map("GradingCorrectOptionIds")
 }
@@ -289,6 +330,10 @@ model Response {
   totalScore      Int
   answers         Answer[]
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
   @@map("Responses")
 }
 
@@ -300,6 +345,10 @@ model Answer {
   fileUploadAnswers Json?
   response          Response     @relation(fields: [responseId], references: [responseId])
   responseId        Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   @@map("Answers")
 }
