@@ -46,6 +46,7 @@ model Form {
   infoQuestions       InfoQuestion[]
   texts               Text[]
   textQuestions       TextQuestion[]
+  responses           Response[]
 
   @@map("Forms")
 }
@@ -245,13 +246,60 @@ model Text {
 }
 
 model Option {
-  optionId     Int          @id @default(autoincrement())
-  questionId   Int
-  content      String
-  imageUrl     String?
-  position     Int
-  questionType QuestionType
+  optionId               Int                     @id @default(autoincrement())
+  questionId             Int
+  content                String
+  imageUrl               String?
+  position               Int
+  questionType           QuestionType
+  gradingCorrectOptionId GradingCorrectOptionId?
 
   @@unique([optionId, questionId])
   @@map("Options")
+}
+
+model Grading {
+  gradingId         Int                      @id @default(autoincrement())
+  questionId        String
+  questionType      QuestionType
+  pointValue        Int
+  feedbackWhenRight String
+  feedbackWhenWrong String
+  generalFeedback   String
+  correctOptionIds  GradingCorrectOptionId[]
+
+  @@unique([gradingId, questionId])
+  @@map("Gradings")
+}
+
+model GradingCorrectOptionId {
+  grading   Grading @relation(fields: [gradingId], references: [gradingId])
+  gradingId Int
+  option    Option  @relation(fields: [optionId], references: [optionId])
+  optionId  Int     @unique
+
+  @@map("GradingCorrectOptionIds")
+}
+
+model Response {
+  responseId      Int      @id @default(autoincrement())
+  form            Form     @relation(fields: [formId], references: [formId])
+  formId          Int
+  respondentEmail String
+  totalScore      Int
+  answers         Answer[]
+
+  @@map("Responses")
+}
+
+model Answer {
+  answerId          Int          @id @default(autoincrement())
+  questionId        Int
+  questionType      QuestionType
+  textAnswers       Json?
+  fileUploadAnswers Json?
+  response          Response     @relation(fields: [responseId], references: [responseId])
+  responseId        Int
+
+  @@map("Answers")
 }
