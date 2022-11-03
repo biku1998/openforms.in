@@ -338,17 +338,44 @@ model Response {
 }
 
 model Answer {
-  answerId          Int          @id @default(autoincrement())
-  questionId        Int
-  questionType      QuestionType
-  textAnswers       Json?
-  fileUploadAnswers Json?
-  response          Response     @relation(fields: [responseId], references: [responseId])
-  responseId        Int
+  answerId     Int          @id @default(autoincrement())
+  questionId   Int
+  questionType QuestionType
+  response     Response     @relation(fields: [responseId], references: [responseId])
+  responseId   Int
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime?          @updatedAt
+  deletedAt         DateTime?
+  textAnswers       TextAnswer[]
+  fileUploadAnswers FileUploadAnswer[]
+
+  @@map("Answers")
+}
+
+model TextAnswer {
+  textAnswerId Int    @id @default(autoincrement())
+  value        String
+  answer       Answer @relation(fields: [answerId], references: [answerId])
+  answerId     Int
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   deletedAt DateTime?
 
-  @@map("Answers")
+  @@map("TextAnswers")
+}
+
+model FileUploadAnswer {
+  fileUploadAnswerId Int    @id @default(autoincrement())
+  originalFileName   String
+  uploadUrl          String
+  answer             Answer @relation(fields: [answerId], references: [answerId])
+  answerId           Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
+  @@map("FileUploadAnswers")
 }
