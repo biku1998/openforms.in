@@ -8,27 +8,20 @@ datasource db {
 }
 
 model User {
-  userId       Int        @id @default(autoincrement())
-  email        String     @unique
-  passwordHash String
-  isActive     Boolean    @default(true)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime?  @updatedAt
-  deletedAt    DateTime?
-  forms        Form[]
-  eventLogs    EventLog[]
-  profile      Profile?
-
-  @@map("Users")
-}
-
-model Profile {
-  profileId Int     @id @default(autoincrement())
-  user      User    @relation(fields: [userId], references: [userId])
-  userId    Int     @unique
+  userId    Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
   firstName String
   lastName  String?
   avatarUrl String?
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime?  @updatedAt
+  deletedAt DateTime?
+  forms     Form[]
+  eventLogs EventLog[]
+
+  @@map("Users")
 }
 
 model Form {

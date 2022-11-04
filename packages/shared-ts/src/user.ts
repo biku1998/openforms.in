@@ -1,8 +1,8 @@
 export interface User {
-  name: string;
+  userId: number;
   email: string;
-  is_active: boolean;
-  new: string;
-  created_at: Date;
-  deleted_at: Date;
+  password: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
