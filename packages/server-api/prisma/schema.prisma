@@ -10,18 +10,25 @@ datasource db {
 model User {
   userId       Int        @id @default(autoincrement())
   email        String     @unique
-  firstName    String
-  lastName     String?
   passwordHash String
-  avatarUrl    String?
   isActive     Boolean    @default(true)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime?  @updatedAt
   deletedAt    DateTime?
   forms        Form[]
   eventLogs    EventLog[]
+  profile      Profile?
 
   @@map("Users")
+}
+
+model Profile {
+  profileId Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [userId])
+  userId    Int     @unique
+  firstName String
+  lastName  String?
+  avatarUrl String?
 }
 
 model Form {
