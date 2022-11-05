@@ -21,12 +21,17 @@ async function bootstrap() {
 
   const configService: ConfigService = app.get(ConfigService);
 
+  console.log(configService.get<string>('NODE_ENV') === 'production');
   // configure session storage
   app.use(
     session({
       secret: configService.get<string>('SESSION_SIGN_SECRET'),
       resave: false,
       saveUninitialized: false,
+      cookie: {
+        secure: configService.get<string>('NODE_ENV') === 'production',
+        maxAge: 1 * 86400000, // (no of day) * milliseconds
+      },
     }),
   );
 
