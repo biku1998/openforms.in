@@ -1,4 +1,13 @@
 import { Session } from 'express-session';
-import { User } from 'shared-ts';
 
-export type UserSession = Session & Record<'user', User | undefined>;
+export type UserSession = Session &
+  Record<
+    'user',
+    {
+      userId: number;
+      userEmail: string;
+      userAgent: string;
+      ipAddress: string;
+      lastLogin: Date;
+    }
+  >;
