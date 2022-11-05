@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
+import { Public } from 'src/utils/public.decorator';
 import { UserSession } from 'src/utils/types';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dtos/login-user.dto';
@@ -42,6 +43,7 @@ export class AuthController {
     };
   }
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('local/login')
   async login(

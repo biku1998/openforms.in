@@ -2,7 +2,13 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  async getHealth() {
+    // TODO: implement the database health check later
+    return {
+      health: {
+        app: 'ok',
+        database: 'ok',
+      },
+    };
   }
 }
