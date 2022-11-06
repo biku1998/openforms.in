@@ -8,6 +8,6 @@ export type UserSession = Session &
       userEmail: string;
       userAgent: string;
       ipAddress: string;
-      lastLogin: Date;
+      lastLogin: string;
     }
   >;

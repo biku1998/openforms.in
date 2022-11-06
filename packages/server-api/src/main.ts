@@ -2,6 +2,8 @@ import { VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
 import * as session from 'express-session';
+import * as connectRedis from 'connect-redis'; // new code
+import IoRedis from 'ioredis';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { SessionGuard } from './auth/guards/session.guard';
@@ -21,10 +23,14 @@ async function bootstrap() {
 
   const configService: ConfigService = app.get(ConfigService);
 
-  console.log(configService.get<string>('NODE_ENV') === 'production');
+  // init redis
+  const RedisStore = connectRedis(session);
+  const redisClient = new IoRedis(configService.get<string>('REDIS_URL'));
+
   // configure session storage
   app.use(
     session({
+      store: new RedisStore({ client: redisClient }),
       secret: configService.get<string>('SESSION_SIGN_SECRET'),
       resave: false,
       saveUninitialized: false,

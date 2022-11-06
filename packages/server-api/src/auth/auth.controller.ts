@@ -39,7 +39,7 @@ export class AuthController {
       userEmail: user.email,
       userAgent: request.headers['user-agent'],
       ipAddress: ip,
-      lastLogin: new Date(),
+      lastLogin: new Date().toISOString(),
     };
   }
 
@@ -61,7 +61,7 @@ export class AuthController {
       userEmail: user.email,
       userAgent: request.headers['user-agent'],
       ipAddress: ip,
-      lastLogin: new Date(),
+      lastLogin: new Date().toISOString(),
     };
   }
 
