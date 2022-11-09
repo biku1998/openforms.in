@@ -1,4 +1,4 @@
-import { VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
 import * as session from 'express-session';
@@ -13,6 +13,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['verbose'],
   });
+
+  // enable global request validation
+  app.useGlobalPipes(new ValidationPipe());
 
   // enable helmet
   app.use(helmet());
