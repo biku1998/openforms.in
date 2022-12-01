@@ -1,5 +1,5 @@
 export interface Form {
   title: string;
   description?: string;
-  iconUrl: string;
+  icon_url: string;
 }

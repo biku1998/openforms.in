@@ -17,7 +17,7 @@ export class FormsService {
     const newForm = await this.prismaService.form.create({
       data: {
         ...createFormDto,
-        userId: loggedInUserId,
+        user_id: loggedInUserId,
       },
     });
     return newForm;

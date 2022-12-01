@@ -1,9 +1,9 @@
 export interface User {
-  userId: number;
+  id: number;
   email: string;
   password: string;
-  avatarUrl?: string;
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  avatar_url?: string;
+  is_active: boolean;
+  created_at: Date;
+  updated_at: Date;
 }

@@ -35,7 +35,7 @@ export class AuthController {
     const user = await this.authService.register(dto);
 
     session.user = {
-      userId: user.userId,
+      userId: user.id,
       userEmail: user.email,
       userAgent: request.headers['user-agent'],
       ipAddress: ip,
@@ -57,7 +57,7 @@ export class AuthController {
     if (!user) throw new UnauthorizedException();
 
     session.user = {
-      userId: user.userId,
+      userId: user.id,
       userEmail: user.email,
       userAgent: request.headers['user-agent'],
       ipAddress: ip,
