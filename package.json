@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/biku1998/openforms.in#readme",
   "devDependencies": {
-    "lerna": "^6.0.1"
+    "lerna": "^6.4.0"
   },
   "workspaces": [
     "packages/*"
